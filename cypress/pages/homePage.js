@@ -8,6 +8,8 @@ class homePage {
     dropdownProducts: () => cy.get(".c-jLWzSx"),
 
     headerOptions: () => cy.get("div .c-hzhYFJ"),
+
+    footerSocial: () => cy.get(".c-tKuzq.mchNoDecorate"),
   };
 
   clickProducts() {
@@ -20,10 +22,6 @@ class homePage {
 
   clickContactUs() {
     this.elements.headerOptions().eq(2).click();
-  }
-
-  clickShop() {
-    this.elements.headerOptions().eq(1).click();
   }
 }
 

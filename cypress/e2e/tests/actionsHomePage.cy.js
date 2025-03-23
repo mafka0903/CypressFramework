@@ -1,9 +1,8 @@
-//import homePage from "../../pages/homePage";
 const homePage = require("../../pages/homePage");
 const contactUsPage = require("../../pages/contactUsPage");
 const pricingPage = require("../../pages/pricingPage");
 
-describe("example to-do app", () => {
+describe("home page actions", () => {
   beforeEach(() => {
     cy.visit("https://telnyx.com");
   });
@@ -20,7 +19,7 @@ describe("example to-do app", () => {
     homePage.elements.dropdownProducts().should("be.visible");
   });
 
-  it("Check that selecting a menu option without a dropdown redirects the user to the new page.", () => {
+  it("Check that selecting a menu option without a dropdown redirects the user to the new page", () => {
     homePage.clickPricing();
     cy.location().should((location) => {
       expect(location.href).to.eq("https://telnyx.com/pricing");
@@ -69,7 +68,11 @@ describe("example to-do app", () => {
   it("Check that Download pricing is performed successfully", () => {
     homePage.clickPricing();
     pricingPage.clickMessagingAPI();
-    cy.wait(10000);
+    cy.scrollTo("bottom");
+    pricingPage.elements
+      .downloadFirstName()
+      .should("exist")
+      .should("be.visible", { timeout: 10000 });
     pricingPage.typeDownloadFirstName();
     pricingPage.typeDownloadLastName();
     pricingPage.typeDownloadBussinessEmail();
@@ -77,5 +80,35 @@ describe("example to-do app", () => {
     cy.get(".c-PJLV.c-PJLV-kmbBBS-dark-true.c-PJLV-ghYBfS-lead-true").should(
       "be.visible"
     );
+  });
+
+  it("Check that user navigate to a different domain page when clicking Shop", () => {
+    homePage.elements.headerOptions().should("be.visible", { timeout: 10000 });
+    homePage.elements
+      .headerOptions()
+      .eq(1)
+      .should("have.attr", "href", "https://shop.telnyx.com")
+      .and("have.attr", "target", "_blank");
+  });
+
+  it("Сhecking that  Footer Links will redirect to the correct pages", () => {
+    homePage.elements.footerSocial().should("be.visible", { timeout: 10000 });
+    homePage.elements
+      .footerSocial()
+      .eq(0)
+      .should("have.attr", "href", "https://www.linkedin.com/company/telnyx/")
+      .and("have.attr", "target", "_blank");
+
+    homePage.elements
+      .footerSocial()
+      .eq(1)
+      .should("have.attr", "href", "https://twitter.com/telnyx")
+      .and("have.attr", "target", "_blank");
+
+    homePage.elements
+      .footerSocial()
+      .eq(2)
+      .should("have.attr", "href", "https://www.facebook.com/Telnyx/")
+      .and("have.attr", "target", "_blank");
   });
 });
